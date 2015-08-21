@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>七巧板</title>
+	<style type="text/css">
+		#canvas{
+			display: block;
+			margin: 50px auto;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" ></canvas>
+</body>
+<script>
+	//定义一些节点的数据
+	var tangram = [
+	{p:[{x:0,y:0},{x:800,y:0},{x:400,y:400}],color:"#caff67"},
+	{p:[{x:0,y:0},{x:400,y:400},{x:0,y:800}],color:"#67becf"},
+	{p:[{x:800,y:0},{x:800,y:400},{x:600,y:600},{x:600,y:200}],color:"#ef3d61"},
+	{p:[{x:600,y:200},{x:600,y:600},{x:400,y:400}],color:"#f9f51a"},
+	{p:[{x:400,y:400},{x:600,y:600},{x:400,y:800},{x:200,y:600}],color:"#a594c0"},
+	{p:[{x:200,y:600},{x:400,y:800},{x:0,y:800}],color:"#fa8ecc"},
+	{p:[{x:800,y:400},{x:800,y:800},{x:400,y:800}],color:"#f6ca29"}]	
+
+window.onload = function(){
+	var canvas = document.getElementById('canvas');
+
+	canvas.width = 800;
+	canvas.height = 800;
+	var context = canvas.getContext("2d");
+
+	for(var i = 0; i < tangram.length; i++)
+		draw(tangram[i], context)
+	}
+
+	//绘制相应的线条，填充相应区域一定的颜色
+	function draw(piece, cxt){
+		
+		//基于状态绘制图形
+		cxt.beginPath();
+		cxt.moveTo(piece.p[0].x, piece.p[0].y);
+		for(var i = 0; i<piece.p.length; i++){
+			cxt.lineTo(piece.p[i].x, piece.p[i].y);
+		}
+
+		cxt.closePath();
+		cxt.fillStyle = piece.color;
+		cxt.fill();	
+
+		cxt.storkeStyle = "black"
+		cxt.lineWidth = 3
+		cxt.stroke();
+	}
+</script>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>圆形的绘制</title>
+	<style type="text/css">
+		/*这里对于canvas样式的定义最好是在canvas标签里面定义*/
+		#canvas{
+			display: block;
+			margin: 50px auto;
+			border:2px solid green;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" ></canvas>
+</body>
+<script>
+	window.onload = function(){
+		var canvas = document.getElementById('canvas');
+		canvas.width = 1024;
+		canvas.height = 768;
+		var context = canvas.getContext("2d");
+		context.lineWidth = 2
+		context.strokeStyle = "#005588"
+		//需要注意的是：我们1pi 1.5pi这些值是固定在圆的相应的位置的
+		//context.arc(300, 300, 200, 0, .5*Math.PI, true)
+
+		//通过for循环来控制圆心的位置
+		for(var i = 0; i < 10; i++){
+			context.beginPath()
+			context.arc(50 + i*100, 60, 40, 0, 2*Math.PI*(i+1)/10)
+			//封闭路径
+			//context.closePath()
+			context.stroke()
+		}
+		context.stroke()
+
+		context.fillStyle = "green"
+		for(var i = 0; i < 10; i++){
+			context.beginPath()
+			context.arc(50 + i*100, 200, 40, 0, 2*Math.PI*(i+1)/10)
+			//在使用了fill之后，closePath并没用，fill会自动的封闭
+			context.closePath()
+			context.fill()
+		}
+	}
+</script>
+</html>
