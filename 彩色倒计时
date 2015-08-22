@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <canvas id="canvas" style="display:block;margin:50px auto;">
+        当前浏览器不支持Canvas，请更换浏览器后再试
+    </canvas>
+
+    <script>
+    //1、为什么我要把所有的东西东放在一个html文件里面：在单一的页面里面没必要分离script css等
+    //声明1~10的01点阵
+    var digit =
+        [
+            [
+                [0,0,1,1,1,0,0],
+                [0,1,1,0,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,0,1,1,0],
+                [0,0,1,1,1,0,0]
+            ],//0
+            [
+                [0,0,0,1,1,0,0],
+                [0,1,1,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [1,1,1,1,1,1,1]
+            ],//1
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,0,0,0],
+                [0,1,1,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,0,0,0,1,1],
+                [1,1,1,1,1,1,1]
+            ],//2
+            [
+                [1,1,1,1,1,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,1,0,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//3
+            [
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,1,0],
+                [0,0,1,1,1,1,0],
+                [0,1,1,0,1,1,0],
+                [1,1,0,0,1,1,0],
+                [1,1,1,1,1,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,1,1]
+            ],//4
+            [
+                [1,1,1,1,1,1,1],
+                [1,1,0,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,1,1,1,1,0],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//5
+            [
+                [0,0,0,0,1,1,0],
+                [0,0,1,1,0,0,0],
+                [0,1,1,0,0,0,0],
+                [1,1,0,0,0,0,0],
+                [1,1,0,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//6
+            [
+                [1,1,1,1,1,1,1],
+                [1,1,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,0,0,1,1,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0],
+                [0,0,1,1,0,0,0]
+            ],//7
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,1,1,0]
+            ],//8
+            [
+                [0,1,1,1,1,1,0],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [1,1,0,0,0,1,1],
+                [0,1,1,1,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1],
+                [0,0,0,0,1,1,0],
+                [0,0,0,1,1,0,0],
+                [0,1,1,0,0,0,0]
+            ],//9
+            [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,1,1,0],
+                [0,1,1,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,1,1,0],
+                [0,1,1,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ]//:
+        ];
+
+    //预先定义的几个基础值
+    var WINDOW_WIDTH = 1024;
+    var WINDOW_HEIGHT = 768;
+    var RADIUS = 8;
+    var MARGIN_TOP = 60;
+    var MARGIN_LEFT = 30;
+
+    //const用于定义常量，const所定义的值不会改变
+    //注意月份的传值要-1，测试时没有效果注意修改这个设定的时间
+    const endTime = new Date(2015,7,22,18,47,52);
+    var curShowTimeSeconds = 0
+
+    window.onload = function(){
+
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext("2d");
+
+        canvas.width = WINDOW_WIDTH;
+        canvas.height = WINDOW_HEIGHT;
+
+        curShowTimeSeconds = getCurrentShowTimeSeconds()
+        render( context )
+    }
+
+    function getCurrentShowTimeSeconds() {
+    	//获取当前时间
+        var curTime = new Date();
+       	//时间差
+        var ret = endTime.getTime() - curTime.getTime();
+        console.log(ret)
+        //Math.round 四舍五入,毫秒转化成秒
+        ret = Math.round( ret/1000 )
+        return ret >= 0 ? ret : 0;
+    }
+
+    function render( cxt ){
+    	//parseInt()取整
+        var hours = parseInt( curShowTimeSeconds / 3600);
+        var minutes = parseInt( (curShowTimeSeconds - hours * 3600)/60 )
+        var seconds = curShowTimeSeconds % 60
+
+        //我们可以把下面为了设定园画得位置的值放在一个数组当中
+        //MARGIN_TOP = y  相对于画布的左上角的位置
+        renderDigit( MARGIN_LEFT , 				   MARGIN_TOP , parseInt(hours/10) , cxt )
+        renderDigit( MARGIN_LEFT + 15*(RADIUS+1) , MARGIN_TOP , parseInt(hours%10) , cxt )
+        renderDigit( MARGIN_LEFT + 30*(RADIUS+1) , MARGIN_TOP , 10 , 				 cxt )
+        renderDigit( MARGIN_LEFT + 39*(RADIUS+1) , MARGIN_TOP , parseInt(minutes/10) , cxt);
+        renderDigit( MARGIN_LEFT + 54*(RADIUS+1) , MARGIN_TOP , parseInt(minutes%10) , cxt);
+        renderDigit( MARGIN_LEFT + 69*(RADIUS+1) , MARGIN_TOP , 10 , 				   cxt);
+        renderDigit( MARGIN_LEFT + 78*(RADIUS+1) , MARGIN_TOP , parseInt(seconds/10) , cxt);
+        renderDigit( MARGIN_LEFT + 93*(RADIUS+1) , MARGIN_TOP , parseInt(seconds%10) , cxt);
+    }
+
+    function renderDigit( x , y , num , cxt ){
+
+        cxt.fillStyle = "rgb(0,102,153)";
+
+        for( var i = 0 ; i < digit[num].length ; i ++ )
+            for(var j = 0 ; j < digit[num][i].length ; j ++ )
+                if( digit[num][i][j] == 1 ){
+                	//== 与 ===的区别在于：==会先转化类型在判断值是否相同。===直接给出结果
+                    cxt.beginPath();
+                    cxt.arc( x+j*2*(RADIUS+1)+(RADIUS+1) , y+i*2*(RADIUS+1)+(RADIUS+1) , RADIUS , 0 , 2*Math.PI )
+                    cxt.closePath()
+
+                    cxt.fill()
+                }
+    }
+    </script>
+</body>
+</html>
+
